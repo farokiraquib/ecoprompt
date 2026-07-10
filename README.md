@@ -46,33 +46,54 @@ Open your browser and navigate to:
 
 ---
 
-## 🔌 How to Connect Your Tools
+## 🔌 Connecting Your Coding Tools
 
-**Wait, do I need two API keys?**
-Yes, conceptually. 
-1. **The Proxy's Key:** EcoPrompt needs an API key to run its "complexity scorer" (this is what you provide in the setup wizard).
-2. **The Agent's Key:** Your coding tool (like Claude Code or Cursor) still needs its own API key to do the actual coding (it passes this key behind the scenes). 
-*(Note: If you use Anthropic for both, it's just the same key twice!)*
+There are hundreds of AI coding tools, but they all work the same way. 
 
-You just need to tell your AI coding agent to talk to `http://localhost:3000` instead of the official API. EcoPrompt intercepts it, checks the complexity, and forwards it to the provider.
+To use them with EcoPrompt, you always need to do two things inside your coding tool:
+1. **Set your Coding API Key** (e.g., your OpenAI or Anthropic key used for actually writing the code).
+2. **Set the Base URL to `http://localhost:3000`** (so it routes through EcoPrompt instead of the internet).
 
-### 🤖 Claude Code
-Tell Claude Code to send requests through EcoPrompt:
-```bash
-export ANTHROPIC_BASE_URL="http://localhost:3000"
-claude
-```
+Here are step-by-step instructions for the most popular tools:
 
-### ⌨️ Aider
-Tell Aider to use EcoPrompt as its API base:
-```bash
-aider --api-base http://localhost:3000
-```
+### ⌨️ Aider (Terminal)
+1. Export your coding API key in your terminal (e.g., for OpenAI):
+   `export OPENAI_API_KEY="your-api-key"`
+2. Start Aider and tell it to use EcoPrompt as the Base URL:
+   `aider --api-base http://localhost:3000`
 
-### 💻 Cline (VS Code Extension)
-1. Open Cline Settings
-2. Under **API Provider**, select your target provider (e.g., Anthropic or OpenAI).
-3. Change the **Base URL** to `http://localhost:3000`
+### 🤖 Claude Code (Terminal)
+1. Export your Anthropic coding API key:
+   `export ANTHROPIC_API_KEY="your-api-key"`
+2. Export the EcoPrompt Base URL:
+   `export ANTHROPIC_BASE_URL="http://localhost:3000"`
+3. Start Claude Code normally:
+   `claude`
+
+### 🖱️ Cursor (IDE)
+1. Open Cursor Settings (`Cmd/Ctrl + Shift + J`).
+2. Go to **Models** > **OpenAI API Key** (or Anthropic).
+3. Paste your coding API Key.
+4. Click **Override Base URL** and set it to: `http://localhost:3000/v1`
+
+### 💻 Cline / Roo Code (VS Code Extension)
+1. Open the Extension Settings.
+2. Under **API Provider**, select your provider (e.g., Anthropic).
+3. Paste your coding API key into the Key box.
+4. Paste `http://localhost:3000` into the **Base URL** box.
+
+### 🧩 Continue.dev (VS Code)
+1. Open your `config.json` in Continue.
+2. Add your model configuration like this:
+   ```json
+   "models": [{
+     "title": "EcoPrompt",
+     "provider": "openai",
+     "model": "gpt-4o",
+     "apiKey": "your-coding-api-key",
+     "apiBase": "http://localhost:3000/v1"
+   }]
+   ```
 
 ---
 
