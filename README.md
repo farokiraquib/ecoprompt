@@ -86,6 +86,14 @@ claude
 3. Paste your coding API Key.
 4. Click **Override Base URL** and set it to: `http://localhost:3000/v1`
 
+### 🚀 Google Antigravity (CLI / IDE)
+If you are using Antigravity 2.0 or the `agy` CLI, export the Base URL for your specific model provider (e.g., Gemini or Anthropic) before starting:
+```bash
+export GEMINI_API_BASE_URL="http://localhost:3000"
+# or export ANTHROPIC_BASE_URL="http://localhost:3000"
+agy
+```
+
 ### 💻 Cline / Roo Code (VS Code Extension)
 1. Open the Extension Settings.
 2. Under **API Provider**, select your provider (e.g., Anthropic).
