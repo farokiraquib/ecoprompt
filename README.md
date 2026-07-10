@@ -24,6 +24,58 @@ The result? You get the exact same coding experience, but your API bill drops dr
 
 ---
 
+## 🚀 Quick Start
+
+Getting started takes less than a minute.
+
+### 1. Install Globally
+```bash
+npm install -g ecoprompt-cli
+```
+
+### 2. Start the Proxy
+Simply run the command. If it's your first time, the interactive wizard will ask for your preferred scoring provider (Anthropic, OpenAI, or Gemini) and securely save your API key.
+```bash
+ecoprompt
+```
+*The proxy is now running locally at `http://localhost:3000`.*
+
+### 3. View Your Dashboard
+Open your browser and navigate to:
+👉 **[http://localhost:3000/stats](http://localhost:3000/stats)** to see your live vibe-coding savings!
+
+---
+
+## 🔌 How to Connect Your Tools
+
+**Wait, do I need two API keys?**
+Yes, conceptually. 
+1. **The Proxy's Key:** EcoPrompt needs an API key to run its "complexity scorer" (this is what you provide in the setup wizard).
+2. **The Agent's Key:** Your coding tool (like Claude Code or Cursor) still needs its own API key to do the actual coding (it passes this key behind the scenes). 
+*(Note: If you use Anthropic for both, it's just the same key twice!)*
+
+You just need to tell your AI coding agent to talk to `http://localhost:3000` instead of the official API. EcoPrompt intercepts it, checks the complexity, and forwards it to the provider.
+
+### 🤖 Claude Code
+Tell Claude Code to send requests through EcoPrompt:
+```bash
+export ANTHROPIC_BASE_URL="http://localhost:3000"
+claude
+```
+
+### ⌨️ Aider
+Tell Aider to use EcoPrompt as its API base:
+```bash
+aider --api-base http://localhost:3000
+```
+
+### 💻 Cline (VS Code Extension)
+1. Open Cline Settings
+2. Under **API Provider**, select your target provider (e.g., Anthropic or OpenAI).
+3. Change the **Base URL** to `http://localhost:3000`
+
+---
+
 ## 🧪 How to Test (Without Paid APIs!)
 
 Don't have a Claude or OpenAI key? Want to test it entirely for free? You can use **Groq** or local models like **Ollama**!
@@ -49,56 +101,6 @@ curl http://localhost:3000/v1/chat/completions \
   }'
 ```
 *Check your EcoPrompt terminal or dashboard! You'll see it recognized "fix typo" and downgraded it from `gpt-4o` to `gpt-4o-mini` instantly!*
-
----
-
-## 🚀 Quick Start
-
-Getting started takes less than a minute.
-
-### 1. Install Globally
-```bash
-npm install -g ecoprompt-cli
-```
-
-### 2. Start the Proxy
-Simply run the command. If it's your first time, the interactive wizard will ask for your preferred scoring provider (Anthropic, OpenAI, or Gemini) and securely save your API key.
-```bash
-ecoprompt
-```
-*The proxy is now running locally at `http://localhost:3000`.*
-
-### 3. View Your Dashboard
-Open your browser and navigate to:
-👉 **[http://localhost:3000/stats](http://localhost:3000/stats)** to see your live vibe-coding savings!
-
----
-
-## 🔌 How to Connect Your Tools
-
-You just need to tell your AI coding agent to talk to `http://localhost:3000` instead of the official API. EcoPrompt handles the rest.
-
-### 🤖 Claude Code
-```bash
-export ANTHROPIC_BASE_URL="http://localhost:3000"
-claude
-```
-
-### ⌨️ Aider
-```bash
-aider --api-base http://localhost:3000
-```
-
-### 💻 Cline (VS Code Extension)
-1. Open Cline Settings
-2. Under **API Provider**, select your target provider (e.g., Anthropic or OpenAI).
-3. Change the **Base URL** to `http://localhost:3000`
-
-### 🌐 Any OpenAI-Compatible Tool
-```bash
-export OPENAI_BASE_URL="http://localhost:3000"
-# Start your tool normally
-```
 
 ---
 
