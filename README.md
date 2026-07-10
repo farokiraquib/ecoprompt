@@ -1,9 +1,9 @@
 <div align="center">
-  <h1>🌿 EcoPrompt CLI</h1>
+  <h1>EcoPrompt CLI</h1>
   <p><b>Zero-config reverse proxy that cuts your AI vibe-coding costs by up to 60%.</b></p>
   <p>
-    <a href="https://github.com/farokiraquib/ecoprompt">⭐ Star us on GitHub</a> |
-    <a href="https://github.com/farokiraquib/ecoprompt/issues">🐛 Report a Bug</a>
+    <a href="https://github.com/farokiraquib/ecoprompt">Star us on GitHub</a> |
+    <a href="https://github.com/farokiraquib/ecoprompt/issues">Report a Bug</a>
   </p>
 </div>
 
@@ -13,18 +13,18 @@ The result? You get the exact same coding experience, but your API bill drops dr
 
 ---
 
-## ✨ Features
+## Features
 
-- **🪄 Zero-Config Setup**: Just type `ecoprompt`. Our interactive wizard will guide you to set up your API keys in 10 seconds.
-- **🌍 Universal Support (NEW)**: Use any provider! Choose Claude, OpenAI, Gemini, or even plug in custom endpoints for **Groq, LM Studio, or local Ollama models**. It will dynamically fetch your available models for you to pick!
-- **🧠 Hybrid AI Routing**: Uses blindingly fast heuristics (<1ms) for obvious tasks ("fix typo"), and cheap AI models (~300ms) to semantically score borderline prompts.
-- **📊 Beautiful Live Dashboard**: Watch your savings pile up in real-time on a sleek, dark-mode web dashboard.
-- **⚡ Zero-Copy Streaming**: Bypasses heavy frameworks to pipe data directly to your CLI. You won't even notice it's there.
-- **🛡️ Fail-Open Design**: If anything goes wrong, requests pass through unchanged. It never breaks your workflow.
+- **Zero-Config Setup**: Just type `ecoprompt`. Our interactive wizard will guide you to set up your API keys in 10 seconds.
+- **Universal Support (NEW)**: Use any provider! Choose Claude, OpenAI, Gemini, or even plug in custom endpoints for **Groq, LM Studio, or local Ollama models**. It will dynamically fetch your available models for you to pick!
+- **Hybrid AI Routing**: Uses blindingly fast heuristics (<1ms) for obvious tasks ("fix typo"), and cheap AI models (~300ms) to semantically score borderline prompts.
+- **Beautiful Live Dashboard**: Watch your savings pile up in real-time on a sleek, dark-mode web dashboard.
+- **Zero-Copy Streaming**: Bypasses heavy frameworks to pipe data directly to your CLI. You won't even notice it's there.
+- **Fail-Open Design**: If anything goes wrong, requests pass through unchanged. It never breaks your workflow.
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 Getting started takes less than a minute.
 
@@ -42,11 +42,11 @@ ecoprompt
 
 ### 3. View Your Dashboard
 Open your browser and navigate to:
-👉 **[http://localhost:3000/stats](http://localhost:3000/stats)** to see your live vibe-coding savings!
+**[http://localhost:3000/stats](http://localhost:3000/stats)** to see your live vibe-coding savings!
 
 ---
 
-## 🔌 Connecting Your Coding Tools
+## Connecting Your Coding Tools
 
 There are hundreds of AI coding tools, but they all work the same way. 
 
@@ -56,7 +56,7 @@ To use them with EcoPrompt, you always need to do two things inside your coding 
 
 Here are step-by-step instructions for the most popular tools:
 
-### ⌨️ Aider (Terminal)
+### Aider (Terminal)
 1. Export your coding API key in your terminal (e.g., for OpenAI):
 ```bash
 export OPENAI_API_KEY="your-api-key"
@@ -66,7 +66,7 @@ export OPENAI_API_KEY="your-api-key"
 aider --api-base http://localhost:3000
 ```
 
-### 🤖 Claude Code (Terminal)
+### Claude Code (Terminal)
 1. Export your Anthropic coding API key:
 ```bash
 export ANTHROPIC_API_KEY="your-api-key"
@@ -80,13 +80,13 @@ export ANTHROPIC_BASE_URL="http://localhost:3000"
 claude
 ```
 
-### 🖱️ Cursor (IDE)
+### Cursor (IDE)
 1. Open Cursor Settings (`Cmd/Ctrl + Shift + J`).
 2. Go to **Models** > **OpenAI API Key** (or Anthropic).
 3. Paste your coding API Key.
 4. Click **Override Base URL** and set it to: `http://localhost:3000/v1`
 
-### 🚀 Google Antigravity (CLI / IDE)
+### Google Antigravity (CLI / IDE)
 If you are using Antigravity 2.0 or the `agy` CLI, export the Base URL for your specific model provider (e.g., Gemini or Anthropic) before starting:
 ```bash
 export GEMINI_API_BASE_URL="http://localhost:3000"
@@ -94,13 +94,13 @@ export GEMINI_API_BASE_URL="http://localhost:3000"
 agy
 ```
 
-### 💻 Cline / Roo Code (VS Code Extension)
+### Cline / Roo Code (VS Code Extension)
 1. Open the Extension Settings.
 2. Under **API Provider**, select your provider (e.g., Anthropic).
 3. Paste your coding API key into the Key box.
 4. Paste `http://localhost:3000` into the **Base URL** box.
 
-### 🧩 Continue.dev (VS Code)
+### Continue.dev (VS Code)
 1. Open your `config.json` in Continue.
 2. Add your model configuration like this:
    ```json
@@ -115,7 +115,7 @@ agy
 
 ---
 
-## 🧪 How to Test (Without Paid APIs!)
+## How to Test (Without Paid APIs!)
 
 Don't have a Claude or OpenAI key? Want to test it entirely for free? You can use **Groq** or local models like **Ollama**!
 
@@ -143,22 +143,22 @@ curl http://localhost:3000/v1/chat/completions \
 
 ---
 
-## ⚙️ How Scoring Works
+## How Scoring Works
 
 EcoPrompt uses a brilliant two-tier scoring system to guarantee you never get a bad response:
 
 1. **Fast Heuristics (< 1ms)**: Catches trivially obvious things.
-   - *User:* "fix typo in line 4" → **Score 0.1** (Simple ✅)
-   - *User:* "architect a distributed caching system" → **Score 0.9** (Complex ❌)
+   - *User:* "fix typo in line 4" -> **Score 0.1** (Simple)
+   - *User:* "architect a distributed caching system" -> **Score 0.9** (Complex)
 
 2. **AI Classifier (~300ms)**: For everything in between, it asks an ultra-cheap model (like Haiku or GPT-4o-mini) to semantically understand your prompt using conversation context.
-   - *User:* "ok proceed" (after a complex plan) → **Score 0.8** (Complex ❌)
+   - *User:* "ok proceed" (after a complex plan) -> **Score 0.8** (Complex)
 
 > **Conservative by default:** When in doubt, EcoPrompt *always* keeps the premium model. A missed saving costs pennies; a bad downgrade costs your time.
 
 ---
 
-## 🎛️ Advanced Configuration
+## Advanced Configuration
 
 EcoPrompt is zero-config by default, but highly customizable for power users.
 
@@ -177,9 +177,9 @@ ecoprompt --port 8080 --threshold 0.5 --target https://api.openai.com
 
 ---
 
-## 🔒 Privacy & Security
+## Privacy & Security
 
 **100% Local.** EcoPrompt stores your configuration locally in `~/.ecoprompt/config.json`. There is absolutely no telemetry, no tracking, and no data leaves your machine except to go directly to your chosen AI providers.
 
-## 📄 License
+## License
 MIT License
