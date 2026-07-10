@@ -2,8 +2,8 @@
   <h1>🌿 EcoPrompt CLI</h1>
   <p><b>Zero-config reverse proxy that cuts your AI vibe-coding costs by up to 60%.</b></p>
   <p>
-    <a href="https://github.com/raquib007r/ecoprompt">⭐ Star us on GitHub</a> |
-    <a href="https://github.com/raquib007r/ecoprompt/issues">🐛 Report a Bug</a>
+    <a href="https://github.com/farokiraquib/ecoprompt">⭐ Star us on GitHub</a> |
+    <a href="https://github.com/farokiraquib/ecoprompt/issues">🐛 Report a Bug</a>
   </p>
 </div>
 
