@@ -58,17 +58,27 @@ Here are step-by-step instructions for the most popular tools:
 
 ### ⌨️ Aider (Terminal)
 1. Export your coding API key in your terminal (e.g., for OpenAI):
-   `export OPENAI_API_KEY="your-api-key"`
+```bash
+export OPENAI_API_KEY="your-api-key"
+```
 2. Start Aider and tell it to use EcoPrompt as the Base URL:
-   `aider --api-base http://localhost:3000`
+```bash
+aider --api-base http://localhost:3000
+```
 
 ### 🤖 Claude Code (Terminal)
 1. Export your Anthropic coding API key:
-   `export ANTHROPIC_API_KEY="your-api-key"`
+```bash
+export ANTHROPIC_API_KEY="your-api-key"
+```
 2. Export the EcoPrompt Base URL:
-   `export ANTHROPIC_BASE_URL="http://localhost:3000"`
+```bash
+export ANTHROPIC_BASE_URL="http://localhost:3000"
+```
 3. Start Claude Code normally:
-   `claude`
+```bash
+claude
+```
 
 ### 🖱️ Cursor (IDE)
 1. Open Cursor Settings (`Cmd/Ctrl + Shift + J`).
