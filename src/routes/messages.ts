@@ -63,7 +63,8 @@ export function createMessageHandler(config: RouteHandlerConfig) {
         parsedBody = JSON.parse(body.toString('utf-8'));
       } catch {
         logger.debug('Body parse error — forwarding unchanged');
-        await forwardUnchanged(req, res, body, path);
+        const result = await forwardUnchanged(req, res, body, path, provider);
+        costTracker.trackRequest('unknown', 'unknown', body.length, result.responseSize);
         return;
       }
 
@@ -82,7 +83,8 @@ export function createMessageHandler(config: RouteHandlerConfig) {
       if (!downgradeModel) {
         // No mapping exists — pass through unchanged
         logger.passthrough(path);
-        await forwardUnchanged(req, res, body, path);
+        const result = await forwardUnchanged(req, res, body, path, provider);
+        costTracker.trackRequest(model, model, body.length, result.responseSize, 1.0, 'No mapping exists (passthrough)');
         return;
       }
 
@@ -119,9 +121,16 @@ export function createMessageHandler(config: RouteHandlerConfig) {
       // -------------------------------------------------------------------
       // 6. Forward the request
       // -------------------------------------------------------------------
+      const isDefaultTarget = targetUrl === 'https://api.anthropic.com';
+      const actualTargetUrl = isDefaultTarget ? provider.defaultBaseUrl : targetUrl;
+
+      if (provider.name === 'Gemini' && forwardPath.startsWith('/models/')) {
+        forwardPath = '/v1beta' + forwardPath;
+      }
+
       const result: ForwardResult = await forwardRequest(
         {
-          targetUrl,
+          targetUrl: actualTargetUrl,
           method: req.method || 'POST',
           path: forwardPath,
           headers: req.headers as Record<string, string | string[] | undefined>,
@@ -152,7 +161,8 @@ export function createMessageHandler(config: RouteHandlerConfig) {
       // 7. Fail-open: forward the original request on ANY error
       // -----------------------------------------------------------------
       logger.error('Pipeline error', err instanceof Error ? err : new Error(String(err)));
-      await forwardUnchanged(req, res, body, path);
+      const result = await forwardUnchanged(req, res, body, path, provider);
+      costTracker.trackRequest(model || 'unknown', model || 'unknown', body.length, result.responseSize, 1.0, 'Error passthrough');
     }
   };
 
@@ -164,12 +174,21 @@ export function createMessageHandler(config: RouteHandlerConfig) {
     res: http.ServerResponse,
     body: Buffer,
     path: string,
-  ): Promise<void> {
-    await forwardRequest(
+    provider?: Provider,
+  ): Promise<ForwardResult> {
+    const isDefaultTarget = targetUrl === 'https://api.anthropic.com';
+    const actualTargetUrl = (isDefaultTarget && provider) ? provider.defaultBaseUrl : targetUrl;
+
+    let forwardPath = path;
+    if (provider?.name === 'Gemini' && forwardPath.startsWith('/models/')) {
+      forwardPath = '/v1beta' + forwardPath;
+    }
+
+    return await forwardRequest(
       {
-        targetUrl,
+        targetUrl: actualTargetUrl,
         method: req.method || 'POST',
-        path,
+        path: forwardPath,
         headers: req.headers as Record<string, string | string[] | undefined>,
         body,
         isStreaming: false,

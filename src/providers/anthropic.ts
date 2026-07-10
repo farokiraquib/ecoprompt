@@ -37,6 +37,7 @@ function extractContentText(content: any): string {
 
 export const anthropicProvider: Provider = {
   name: 'Anthropic',
+  defaultBaseUrl: 'https://api.anthropic.com',
 
   matchRoute(path: string): boolean {
     return path === '/v1/messages' || path.startsWith('/v1/messages?');

@@ -25,6 +25,9 @@ export interface ModelMapping {
 export interface Provider {
   /** Provider name for logging (e.g., 'Anthropic', 'OpenAI', 'Gemini') */
   readonly name: string;
+  
+  /** The default API base URL for this provider */
+  readonly defaultBaseUrl: string;
 
   /** Check if this provider handles the given request path */
   matchRoute(path: string): boolean;

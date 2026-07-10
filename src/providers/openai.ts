@@ -39,6 +39,7 @@ function extractContentText(content: any): string {
 
 export const openaiProvider: Provider = {
   name: 'OpenAI',
+  defaultBaseUrl: 'https://api.openai.com',
 
   matchRoute(path: string): boolean {
     return path === '/v1/chat/completions' || path.startsWith('/v1/chat/completions?');

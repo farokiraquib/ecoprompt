@@ -165,6 +165,7 @@ program
       scorerKey: currentKey,
       scorerEndpoint: options.scorerEndpoint || getDefaultEndpoint(currentProvider, options.target),
       scorerProvider: currentProvider,
+      codingKey: savedConfig.codingKey || '',
       verbose: options.verbose || false,
       conservative: options.conservative !== false,
       noColor: options.color === false,

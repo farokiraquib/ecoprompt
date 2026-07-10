@@ -28,6 +28,7 @@ export interface ServerConfig {
   scorerKey: string;
   scorerEndpoint: string;
   scorerProvider: 'anthropic' | 'openai';
+  codingKey?: string;
   verbose: boolean;
   conservative: boolean;
   noColor: boolean;
@@ -85,6 +86,7 @@ export function createServer(config: ServerConfig): http.Server {
     scoringEngine,
     costTracker,
     logger,
+    codingKey: config.codingKey,
   });
 
   // 5. HTTP server
@@ -172,6 +174,7 @@ if (isDirectRun) {
     scorerKey: process.env.ECOPROMPT_SCORER_KEY || process.env.ANTHROPIC_API_KEY || '',
     scorerEndpoint: process.env.SCORER_ENDPOINT || 'https://api.anthropic.com',
     scorerProvider: (process.env.SCORER_PROVIDER as ServerConfig['scorerProvider']) || 'anthropic',
+    codingKey: process.env.ECOPROMPT_CODING_KEY || '',
     verbose: process.env.VERBOSE === 'true',
     conservative: process.env.CONSERVATIVE !== 'false',
     noColor: process.env.NO_COLOR === 'true',

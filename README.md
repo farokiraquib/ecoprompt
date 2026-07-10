@@ -11,6 +11,10 @@ EcoPrompt sits between your terminal AI agents (like Claude Code, Aider, Cline, 
 
 The result? You get the exact same coding experience, but your API bill drops drastically.
 
+<!-- 📸 SUGGESTION: INSERT A HERO GIF HERE -->
+<!-- Recommended: A split-screen GIF showing Aider/Claude Code running in the terminal on the left, and the EcoPrompt web dashboard instantly updating the savings on the right as prompts are sent. -->
+<!-- REPLACE WITH: ![EcoPrompt Demo](link-to-gif.gif) -->
+
 ---
 
 ## Features
@@ -19,8 +23,9 @@ The result? You get the exact same coding experience, but your API bill drops dr
 - **Universal Support (NEW)**: Use any provider! Choose Claude, OpenAI, Gemini, or even plug in custom endpoints for **Groq, LM Studio, or local Ollama models**. It will dynamically fetch your available models for you to pick!
 - **Hybrid AI Routing**: Uses blindingly fast heuristics (<1ms) for obvious tasks ("fix typo"), and cheap AI models (~300ms) to semantically score borderline prompts.
 - **Beautiful Live Dashboard**: Watch your savings pile up in real-time on a sleek, dark-mode web dashboard.
+- **Web Settings & Dynamic Keys (NEW)**: Change your Scorer or Coding API keys on the fly directly from the dashboard! EcoPrompt automatically injects your keys securely behind the scenes (supporting Anthropic, OpenAI, and even Gemini query params).
 - **Zero-Copy Streaming**: Bypasses heavy frameworks to pipe data directly to your CLI. You won't even notice it's there.
-- **Fail-Open Design**: If anything goes wrong, requests pass through unchanged. It never breaks your workflow.
+- **Fail-Open Design & Path Healing**: If anything goes wrong, requests pass through unchanged. It also automatically "heals" paths (e.g., adding missing `/v1beta` for Gemini clients) so your tools just work.
 
 ---
 
@@ -42,7 +47,18 @@ ecoprompt
 
 ### 3. View Your Dashboard
 Open your browser and navigate to:
-**[http://localhost:3000/stats](http://localhost:3000/stats)** to see your live vibe-coding savings!
+**[http://localhost:3000](http://localhost:3000)** to see your live vibe-coding savings!
+
+<!-- 📸 SUGGESTION: INSERT DASHBOARD SCREENSHOT HERE -->
+<!-- Recommended: A high-quality screenshot of the dark mode dashboard showing the stats cards (Total Requests, Savings, etc.) and the "Settings" button. -->
+<!-- REPLACE WITH: ![Dashboard Stats](link-to-screenshot.png) -->
+
+### 4. Configure Keys on the Fly
+Click the **Settings** button in the top right of the dashboard. You can instantly swap out your Scorer Model or update your Coding API keys without ever needing to restart the proxy!
+
+<!-- 📸 SUGGESTION: INSERT SETTINGS MODAL SCREENSHOT HERE -->
+<!-- Recommended: A screenshot showing the Web Settings modal open, highlighting the ability to paste the "Coding API Key" and "Scorer API Key" directly into the UI. -->
+<!-- REPLACE WITH: ![Settings Modal](link-to-screenshot.png) -->
 
 ---
 

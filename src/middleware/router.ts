@@ -20,6 +20,7 @@ import type { Logger } from '../tracking/logger.js';
 import { createMessageHandler, type RouteHandlerConfig } from '../routes/messages.js';
 import { forwardRequest } from '../proxy/forwarder.js';
 import { getDashboardHtml } from '../dashboard/template.js';
+import { saveUpdatedConfig } from '../config.js';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -30,6 +31,7 @@ export interface RouterConfig {
   scoringEngine: ScoringEngine;
   costTracker: CostTracker;
   logger: Logger;
+  codingKey?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -61,6 +63,7 @@ function sendJson(res: http.ServerResponse, statusCode: number, data: unknown): 
 
 export function createRouter(config: RouterConfig) {
   const { targetUrl, scoringEngine, costTracker, logger } = config;
+  let codingKey = config.codingKey;
 
   const messageHandler = createMessageHandler({
     targetUrl,
@@ -80,8 +83,10 @@ export function createRouter(config: RouterConfig) {
       // Always set CORS headers
       setCorsHeaders(res);
 
-      const url = req.url || '/';
+      let url = req.url || '/';
       const method = (req.method || 'GET').toUpperCase();
+
+      console.log(`\n[PROXY] Incoming ${method} ${url}`);
 
       // -----------------------------------------------------------------
       // OPTIONS pre-flight
@@ -105,6 +110,48 @@ export function createRouter(config: RouterConfig) {
         return;
       }
 
+      if (url === '/api/settings' && method === 'GET') {
+        const config = scoringEngine.getConfig();
+        sendJson(res, 200, {
+          scorerProvider: config.aiConfig?.provider || 'anthropic',
+          scorerModel: config.aiConfig?.model || '',
+          scorerEndpoint: config.aiConfig?.endpoint || '',
+          scorerKeySet: !!config.aiConfig?.apiKey,
+          codingKeySet: !!codingKey,
+        });
+        return;
+      }
+
+      if (url === '/api/settings' && method === 'POST') {
+        const body = await collectBody(req);
+        const data = JSON.parse(body.toString('utf8'));
+        
+        // Update in-memory
+        scoringEngine.updateConfig({
+          aiConfig: {
+            provider: data.scorerProvider,
+            model: data.scorerModel,
+            endpoint: data.scorerEndpoint,
+            apiKey: data.scorerKey || scoringEngine.getConfig().aiConfig?.apiKey || '',
+          }
+        });
+        if (data.codingKey !== undefined) {
+           codingKey = data.codingKey || '';
+        }
+        
+        // Save to disk
+        saveUpdatedConfig({
+          scorerProvider: data.scorerProvider,
+          scorerModel: data.scorerModel,
+          scorerEndpoint: data.scorerEndpoint,
+          ...(data.scorerKey ? { scorerKey: data.scorerKey } : {}),
+          ...(data.codingKey !== undefined ? { codingKey: data.codingKey } : {})
+        });
+        
+        sendJson(res, 200, { success: true });
+        return;
+      }
+
       if ((url === '/' || url === '/stats') && method === 'GET') {
         const html = getDashboardHtml();
         res.writeHead(200, {
@@ -125,14 +172,40 @@ export function createRouter(config: RouterConfig) {
       // -----------------------------------------------------------------
       const provider = providerRegistry.detectProvider(url);
 
+      // -----------------------------------------------------------------
+      // Inject Coding API Key if configured
+      // -----------------------------------------------------------------
+      if (codingKey) {
+        if (provider?.name === 'Anthropic') {
+          req.headers['x-api-key'] = codingKey;
+        } else if (provider?.name === 'Gemini') {
+          // Google AI Studio expects the key in the URL query string
+          if (url.includes('key=')) {
+            url = url.replace(/([?&])key=[^&]+/, `$1key=${codingKey}`);
+          } else {
+            url += (url.includes('?') ? '&' : '?') + `key=${codingKey}`;
+          }
+          console.log(`[PROXY] Rewritten Gemini URL: ${url}`);
+        } else {
+          // Default to Bearer (OpenAI, Groq, custom)
+          req.headers['authorization'] = `Bearer ${codingKey}`;
+        }
+      }
+
       if (!provider) {
         // Unknown provider — transparent passthrough
         logger.passthrough(url);
+        
+        let forwardPath = url;
+        if (forwardPath.startsWith('/models/') && url.includes(':generateContent')) {
+           forwardPath = '/v1beta' + forwardPath;
+        }
+
         await forwardRequest(
           {
             targetUrl,
             method: req.method || 'POST',
-            path: url,
+            path: forwardPath,
             headers: req.headers as Record<string, string | string[] | undefined>,
             body,
             isStreaming: false,

@@ -45,6 +45,21 @@ export class ScoringEngine {
   }
 
   // -----------------------------------------------------------------------
+  // Configuration Management
+  // -----------------------------------------------------------------------
+
+  getConfig(): ScoringConfig {
+    return this.config;
+  }
+
+  updateConfig(newConfig: Partial<ScoringConfig>) {
+    this.config = { ...this.config, ...newConfig };
+    if (newConfig.aiConfig && this.config.aiConfig) {
+      this.config.aiConfig = { ...this.config.aiConfig, ...newConfig.aiConfig };
+    }
+  }
+
+  // -----------------------------------------------------------------------
   // Main pipeline
   // -----------------------------------------------------------------------
 

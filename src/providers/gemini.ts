@@ -46,6 +46,7 @@ function extractPartsText(parts: any[]): string {
 
 export const geminiProvider: Provider = {
   name: 'Gemini',
+  defaultBaseUrl: 'https://generativelanguage.googleapis.com',
 
   matchRoute(path: string): boolean {
     return path.includes('/models/') && (
